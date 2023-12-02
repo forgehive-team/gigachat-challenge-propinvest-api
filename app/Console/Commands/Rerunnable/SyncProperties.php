@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands\Rerunnable;
 
+use App\Models\ParameterProject;
+use App\Models\Project;
 use App\Services\Crawlers\PropertyCrawler;
 use Illuminate\Console\Command;
 
@@ -21,7 +23,14 @@ class SyncProperties extends Command
 
     public function handle()
     {
-        $requestData = $this->crawler->sync();
-        file_put_contents(public_path('request.json'), json_encode($requestData, JSON_PRETTY_PRINT));
+        $projects = $this->crawler->sync();
+        foreach ($projects as $project) {
+            $parameters = $project['parameters'];
+            unset($project['parameters']);
+            $project = Project::create($project);
+            foreach ($parameters as $parameter) {
+                ParameterProject::create(array_merge($parameter, ['project_id' => $project->id]));
+            }
+        }
     }
 }
