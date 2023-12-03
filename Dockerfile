@@ -84,7 +84,7 @@ COPY docker/php/local.ini $PHP_INI_DIR/conf.d/custom.ini
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
-WORKDIR /app
+WORKDIR /srv/api
 
 ARG APP_ENV=local
 
