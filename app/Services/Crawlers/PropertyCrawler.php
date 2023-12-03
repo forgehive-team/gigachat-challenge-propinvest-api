@@ -90,6 +90,7 @@ class PropertyCrawler
                 $projects = []; // temp solution
             } while (count($projects) > 0);
             echo "Handling projects for {$regionItem->name} completed\n";
+            break;
         }
         return $output;
     }
