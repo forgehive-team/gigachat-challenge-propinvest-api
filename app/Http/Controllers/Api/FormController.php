@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 
 class FormController extends Controller
 {
-    const WEBHOOK_URL = 'https://forgehive.ru/webhook/';
+    const WEBHOOK_URL = 'https://ai.forgehive.ru/webhook/';
 
     public function __construct(
         private readonly UserService $service
