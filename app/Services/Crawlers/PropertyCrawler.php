@@ -58,39 +58,37 @@ class PropertyCrawler
         if (!$regions) {
             return []; // die
         }
-        // @todo
-        $max = 4; // temp
         foreach ($regions as $regionItem) {
-            if ($max == 0) {
-                break;
-            }
-            $max--;
             $region = $regionItem->region;
             $regionKey = $regionItem->regionKey;
             if ($regionKey == 0) {
                 continue;
             }
             echo "Handling region {$regionItem->name}\n";
-            // @todo: endless loop
-            $projects = $this->getProjects($region, $regionKey);
-            if (!$projects) {
-                echo "No projects for {$regionItem->name}\n";
-                return []; // die
-            }
-            echo "Handling projects for {$regionItem->name}\n";
-            foreach ($projects as $projectId) {
-                $images             = $this->getProjectImages($projectId);
-                $coordinates        = $this->getProjectLocation($projectId, $region, $regionKey);
-                $basicAttributes    = $this->getProjectBasicInfo($projectId);
-                $parameters         = $this->getProjectParameters($projectId);
-                $output[] = array_merge([
-                    'external_id'   => $projectId,
-                    'coordinates'   => json_encode($coordinates),
-                    'images'        => json_encode($images),
-                    'parameters'    => $parameters,
-                ], $basicAttributes);
-                // $descriptionData    = $this->getProjectDescription($projectId, $region, $regionKey);
-            }
+            $min = 1;
+            $max = 50;
+            $page = 1;
+            do {
+                $projects = $this->getProjects($region, $regionKey, $min, $max, $page);
+                echo "Handling projects for {$regionItem->name}\n";
+                foreach ($projects as $projectId) {
+                    $images = $this->getProjectImages($projectId);
+                    $coordinates = $this->getProjectLocation($projectId, $region, $regionKey);
+                    $basicAttributes = $this->getProjectBasicInfo($projectId);
+                    $parameters = $this->getProjectParameters($projectId);
+                    $output[] = array_merge([
+                        'external_id' => $projectId,
+                        'coordinates' => json_encode($coordinates),
+                        'images' => json_encode($images),
+                        'parameters' => $parameters,
+                    ], $basicAttributes);
+                    // $descriptionData    = $this->getProjectDescription($projectId, $region, $regionKey);
+                }
+                $min += $max;
+                $max += $max;
+                $page++;
+            } while (count($projects) > 0);
+            echo "Handling projects for {$regionItem->name} completed\n";
         }
         return $output;
     }
@@ -107,7 +105,7 @@ class PropertyCrawler
         ]) : null;
     }
 
-    public function getProjects($region, $regionKey, $min = 1, $max = 10, $page = 1): ?Collection
+    public function getProjects($region, $regionKey, $min = 1, $max = 10, $page = 1): array
     {
         $query = [
             'region' => $region,
@@ -123,7 +121,7 @@ class PropertyCrawler
         $response = Http::withHeaders($this->getHeaders())->get($apiUrl);
         $result = $this->getResponseResult($response);
 
-        return $result ? collect($result['list'])->map(fn($item) => $item['gkId']) : null;
+        return $result ? collect($result['list'])->map(fn($item) => $item['gkId'])->toArray() : [];
     }
 
     // optional for AI
