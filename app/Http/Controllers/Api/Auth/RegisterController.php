@@ -21,11 +21,11 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request): \Illuminate\Http\JsonResponse
     {
         $attributes = $request->validated();
-        $this->service->register(
+        $data = $this->service->register(
             $attributes['name'],
             $attributes['email'],
             $attributes['password']
         );
-        return response()->json('', Response::HTTP_OK);
+        return response()->json($data, Response::HTTP_OK);
     }
 }

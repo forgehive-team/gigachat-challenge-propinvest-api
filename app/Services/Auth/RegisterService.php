@@ -21,12 +21,14 @@ class RegisterService
         string $name,
         string $email,
         string $password
-    ): void
+    ): array
     {
-        $this->userService->createUser(
+        $user = $this->userService->createUser(
             $name,
             $email,
             $password,
         );
+        $token = $user->createToken('auth-token')->plainTextToken;
+        return ['token' => $token];
     }
 }
