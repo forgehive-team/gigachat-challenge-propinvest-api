@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('parameter_project', function (Blueprint $table) {
+        Schema::create('recommendations', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('parameter_id');
-            $table->float('weight')->default(0.0);
+            $table->unsignedFloat('weight')->default(0.0);
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('parameter_project');
+        Schema::dropIfExists('recommendations');
     }
 };

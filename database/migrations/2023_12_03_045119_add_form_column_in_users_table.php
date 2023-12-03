@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('parameter_project', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('parameter_id');
-            $table->float('weight')->default(0.0);
+        Schema::table('users', function (Blueprint $table) {
+            $table->json('form')->default('{}');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('parameter_project');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('form');
+        });
     }
 };

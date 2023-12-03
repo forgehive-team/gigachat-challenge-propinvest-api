@@ -59,7 +59,7 @@ class PropertyCrawler
             return []; // die
         }
         // @todo
-        $max = 2; // temp
+        $max = 4; // temp
         foreach ($regions as $regionItem) {
             if ($max == 0) {
                 break;
@@ -210,6 +210,7 @@ class PropertyCrawler
                 'area'          => $result['raion'] ?? null,
                 'region'        => $result['region'] ?? null,
                 'street'        => $result['street'] ?? null,
+                'description'   => $result['placeDesc'] ?? null,
                 // 'website'       => $result['site'] ?? null,
             ];
         }
