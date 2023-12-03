@@ -87,6 +87,7 @@ class PropertyCrawler
                 $min += $max;
                 $max += $max;
                 $page++;
+                $projects = []; // temp solution
             } while (count($projects) > 0);
             echo "Handling projects for {$regionItem->name} completed\n";
         }
