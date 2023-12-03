@@ -1,0 +1,16 @@
+bootstrap/cache/services.php
+**/*.log
+**/*.md
+**/*.php~
+**/._*
+**/.dockerignore
+**/.git/
+**/.gitattributes
+**/.gitignore
+**/.gitmodules
+**/Dockerfile
+**/Thumbs.db
+.editorconfig
+.env.*/
+**/.DS_Store
+**/node_modules
