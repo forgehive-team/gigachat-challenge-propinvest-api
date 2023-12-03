@@ -14,8 +14,7 @@ class RegisterService
      * @param string $name
      * @param string $email
      * @param string $password
-     * @return void
-     * @throws \Exception
+     * @return array
      */
     public function register(
         string $name,
